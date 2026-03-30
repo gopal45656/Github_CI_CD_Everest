@@ -22,7 +22,7 @@ jobs:
             libboost-all-dev libssl-dev libsqlite3-dev \
             libcurl4-openssl-dev pkg-config \
             libsystemd-dev libudev-dev \
-            libpcap-dev
+            libpcap-dev  libcap-dev
 
       - name: Build EVerest
         run: |
