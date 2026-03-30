@@ -32,18 +32,32 @@ jobs:
             libpcap-dev \
             libcap-dev
 
-      - name: Cache build
+      - name: Cache build directory
         uses: actions/cache@v4
         with:
           path: build
-          key: ${{ runner.os }}-build-${{ hashFiles('**/CMakeLists.txt') }}
+          key: ${{ runner.os }}-build
+          restore-keys: |
+            ${{ runner.os }}-build
 
-      - name: Build EVerest
+      - name: Build EVerest (incremental)
         run: |
           mkdir -p build
           cd build
-          cmake ..
+
+          if [ ! -f "Makefile" ]; then
+            echo "Running CMake configuration..."
+            cmake ..
+          else
+            echo "CMake already configured, skipping..."
+          fi
+
           make -j$(nproc)
+
+      - name: Install build (optional)
+        run: |
+          cd build
+          make install || true
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
