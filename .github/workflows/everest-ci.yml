@@ -21,7 +21,8 @@ jobs:
           sudo apt install -y cmake build-essential git \
             libboost-all-dev libssl-dev libsqlite3-dev \
             libcurl4-openssl-dev pkg-config \
-            libsystemd-dev
+            libsystemd-dev libudev-dev \
+            libpcap-dev
 
       - name: Build EVerest
         run: |
