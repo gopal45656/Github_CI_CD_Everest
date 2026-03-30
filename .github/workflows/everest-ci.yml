@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - CI_CD
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
@@ -15,42 +12,19 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y cmake  pkg-config build-essential git 
-          cmake \
-          build-essential \
-          git \
-          libboost-all-dev \
-          libssl-dev \
-          libsqlite3-dev \
-          libcurl4-openssl-dev 
+          sudo apt install -y cmake build-essential git \
+            libboost-all-dev libssl-dev libsqlite3-dev \
+            libcurl4-openssl-dev pkg-config
 
       - name: Build EVerest
         run: |
-          mkdir build
+          mkdir -p build
           cd build
           cmake ..
           make -j$(nproc)
-
-      - name: Archive build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: everest-build
-          path: build/
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: everest-build
-
-      - name: Deploy to target (example)
-        run: |
-          echo "Add SCP/SSH deploy here"
