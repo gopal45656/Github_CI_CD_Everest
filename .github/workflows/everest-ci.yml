@@ -18,11 +18,25 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y cmake build-essential git \
-            libboost-all-dev libssl-dev libsqlite3-dev \
-            libcurl4-openssl-dev pkg-config \
-            libsystemd-dev libudev-dev \
-            libpcap-dev  libcap-dev
+          sudo apt install -y \
+            cmake \
+            build-essential \
+            git \
+            libboost-all-dev \
+            libssl-dev \
+            libsqlite3-dev \
+            libcurl4-openssl-dev \
+            pkg-config \
+            libsystemd-dev \
+            libudev-dev \
+            libpcap-dev \
+            libcap-dev
+
+      - name: Cache build
+        uses: actions/cache@v4
+        with:
+          path: build
+          key: ${{ runner.os }}-build-${{ hashFiles('**/CMakeLists.txt') }}
 
       - name: Build EVerest
         run: |
@@ -30,3 +44,9 @@ jobs:
           cd build
           cmake ..
           make -j$(nproc)
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: everest-build
+          path: build/
