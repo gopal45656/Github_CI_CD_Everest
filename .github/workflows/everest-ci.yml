@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y cmake build-essential git
+          sudo apt install -y cmake  pkg-config build-essential git 
           cmake \
           build-essential \
           git \
@@ -27,7 +27,6 @@ jobs:
           libssl-dev \
           libsqlite3-dev \
           libcurl4-openssl-dev \
-          pkg-config
 
       - name: Build EVerest
         run: |
