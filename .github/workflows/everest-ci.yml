@@ -20,7 +20,8 @@ jobs:
           sudo apt update
           sudo apt install -y cmake build-essential git \
             libboost-all-dev libssl-dev libsqlite3-dev \
-            libcurl4-openssl-dev pkg-config
+            libcurl4-openssl-dev pkg-config \
+            libsystemd-dev
 
       - name: Build EVerest
         run: |
